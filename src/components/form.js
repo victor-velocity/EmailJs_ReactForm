@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import emailjs from '@emailjs/browser';
 
 const RegistrationForm = () => {
+    const form = useRef();
+
+    const sendEmail = (e) => {
+
+    };
+
     const [formData, setFormData] = useState({
         fullname: '',
         email: '',
@@ -26,17 +33,30 @@ const RegistrationForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        alert(`Submitted Data: \n Full Name: ${formData.fullname} \n Email: ${formData.email} \n Username: ${formData.username} \n Password: ${formData.password} \n Gender: ${formData.gender} \n Note: ${formData.note} \n Date of Birth: ${formData.dateofbirth} \n Phone: ${formData.phone} \n Age: ${formData.age} \n Marital Status: ${formData.maritalstatus} \n File: ${formData.file ? formData.file.name : 'No file uploaded'}`);
+        // alert(`Submitted Data: \n Full Name: ${formData.fullname} \n Email: ${formData.email} \n Username: ${formData.username} \n Password: ${formData.password} \n Gender: ${formData.gender} \n Note: ${formData.note} \n Date of Birth: ${formData.dateofbirth} \n Phone: ${formData.phone} \n Age: ${formData.age} \n Marital Status: ${formData.maritalstatus} \n File: ${formData.file ? formData.file.name : 'No file uploaded'}`);
+
+            emailjs
+            .sendForm('service_xc38vm7', 'template_wjch6wr', form.current, {
+                publicKey: 'DFwUprHDriXboxdk4',
+            })
+            .then(
+                () => {
+                    console.log('SUCCESS!');
+                },
+                (error) => {
+                    console.log('FAILED...', error.text);
+                },
+            );
     };
 
-    
+
 
     return (
         <div className='w-auto h-auto bg-green-500 py-7'>
             <div className=" mx-auto w-[70%] bg-white p-8 rounded-3xl shadow-xl">
                 <h2 className="text-4xl font-bold font-sans text-center text-green-800 mb-10">Registration Form</h2>
 
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} ref={form} >
                     <div className='flex flex-grow flex-row justify-between flex-wrap w-full gap-4'>
                         <div className="mb-6 w-[48%]">
                             <label htmlFor="fullname" className="block text-gray-800 font-medium">Full Name:</label>
@@ -215,6 +235,7 @@ const RegistrationForm = () => {
                         <button
                             type="submit"
                             className="p-4 w-[300px] bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                            value="Send"
                         >
                             Submit
                         </button>
